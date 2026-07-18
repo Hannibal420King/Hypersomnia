@@ -1,3 +1,16 @@
+FROM ghcr.io/teamhypersomnia/hypersomnia-server@sha256:2b6fef2c3dded7b1d206ad17b050dfa490267a4dbe6581813a7d023694f611b5 AS headless-extractor
+
+USER root
+WORKDIR /opt/headless-source
+
+RUN set -eux; \
+    /home/hypersomniac/Hypersomnia-Headless.AppImage --appimage-extract >/dev/null; \
+    test -x squashfs-root/AppRun; \
+    test -x squashfs-root/usr/bin/Hypersomnia; \
+    sed -i 's|^"${APPDIR}/usr/bin/Hypersomnia"|exec "${APPDIR}/usr/bin/Hypersomnia"|' squashfs-root/AppRun; \
+    grep -F 'exec "${APPDIR}/usr/bin/Hypersomnia"' squashfs-root/AppRun; \
+    mv squashfs-root /opt/hypersomnia-headless
+
 FROM docker.io/emscripten/emsdk:6.0.3@sha256:bb0910e6a18bb9bd7cb31ae4ed40f9073148b78cb2cdb8ea8676454e0d85425c AS web-builder
 
 USER root
@@ -27,7 +40,30 @@ RUN install -d /opt/hypersomnia-web/assets \
     && cp build/current/Hypersomnia.data /opt/hypersomnia-web/ \
     && cp -aL build/current/assets/. /opt/hypersomnia-web/assets/
 
-FROM docker.io/library/node:24.4.1-bookworm-slim@sha256:36ae19f59c91f3303c7a648f07493fe14c4bd91320ac8d898416327bacf1bbfa
+FROM docker.io/library/node:24.4.1-bookworm-slim@sha256:36ae19f59c91f3303c7a648f07493fe14c4bd91320ac8d898416327bacf1bbfa AS runtime-base
+
+USER root
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends libgnutls30; \
+    installed_version="$(dpkg-query -W -f='${Version}' libgnutls30)"; \
+    dpkg --compare-versions "${installed_version}" ge "3.7.9-2+deb12u7"; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+    groupadd --system --gid 999 hypersomniac; \
+    useradd --system --uid 999 --gid 999 --home-dir /home/hypersomniac \
+        --no-create-home --shell /usr/sbin/nologin hypersomniac; \
+    install -d -o 999 -g 999 -m 0755 \
+        /home/hypersomniac \
+        /home/hypersomniac/.config \
+        /home/hypersomniac/.config/Hypersomnia
+
+COPY --from=headless-extractor /opt/hypersomnia-headless /opt/hypersomnia-headless
+COPY --chmod=0555 vortex/runtime/headless-entrypoint.sh /usr/local/bin/hypersomnia-headless
+
+FROM runtime-base AS app
 
 ENV NODE_ENV=production \
     PORT=8080 \

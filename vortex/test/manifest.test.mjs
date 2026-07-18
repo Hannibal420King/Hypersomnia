@@ -16,6 +16,7 @@ const baselineScopes = [
 
 test("manifest requests only the baseline scopes", () => {
   assert.equal(manifest.schemaVersion, "1.0");
+  assert.equal(manifest.revision, 3);
   assert.deepEqual(manifest.requiredScopes, baselineScopes);
   assert.deepEqual(manifest.optionalScopes, []);
   assert.deepEqual(manifest.notificationTemplates, []);
@@ -42,7 +43,7 @@ test("manifest declares only truthful, attribute-free gameplay observations", ()
   }
 });
 
-test("deployment has a hardened web gateway and immutable headless server", () => {
+test("deployment has a hardened web gateway and extracted headless server", () => {
   const deployment = manifest.deployment;
   assert.deepEqual(deployment.gateway, { service: "web", port: "http" });
   assert.equal(deployment.services.length, 2);
@@ -57,14 +58,11 @@ test("deployment has a hardened web gateway and immutable headless server", () =
   ]);
   assert.equal(web.healthCheck.path, "/healthz");
 
-  assert.equal(server.image.source, "OCI");
-  assert.match(server.image.reference, /@sha256:[a-f0-9]{64}$/);
-  assert.equal(
-    server.image.reference,
-    "ghcr.io/teamhypersomnia/hypersomnia-server@sha256:2b6fef2c3dded7b1d206ad17b050dfa490267a4dbe6581813a7d023694f611b5"
-  );
+  assert.deepEqual(server.image, { source: "APP" });
+  assert.deepEqual(server.entrypoint, ["/usr/local/bin/hypersomnia-headless"]);
+  assert.equal("command" in server, false);
   assert.equal("vortexEnvironment" in server, false);
-  assert.equal(server.readOnlyRootfs, false);
+  assert.equal(server.readOnlyRootfs, true);
   assert.deepEqual(server.ports, [
     { name: "web-rtc", containerPort: 9000, protocol: "UDP", exposure: "HOST", hostPort: 9000 }
   ]);
@@ -72,7 +70,7 @@ test("deployment has a hardened web gateway and immutable headless server", () =
   assert.deepEqual(server.mounts, [
     {
       volume: "server-data",
-      target: "/home/hypersomniac/.config/Hypersomnia/user",
+      target: "/home/hypersomniac/.config/Hypersomnia",
       readOnly: false
     }
   ]);

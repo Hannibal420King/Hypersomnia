@@ -12,15 +12,19 @@ The canonical deployment lives in [`vortex.manifest.json`](../vortex.manifest.js
 
 ## Headless server
 
-- The upstream headless OCI image is pinned by SHA-256 digest and runs as its built-in unprivileged `hypersomniac` user.
+- The same APP image supplies both services. Its Docker build uses the upstream headless OCI image, pinned by SHA-256 digest, only as a build stage; it extracts the headless AppImage and copies the extracted AppDir into `/opt/hypersomnia-headless`.
+- The server overrides the web gateway entrypoint with `/usr/local/bin/hypersomnia-headless`. That launcher sets the AppImage runtime environment, deliberately ignores the APP image's Node.js command, and starts the extracted `AppRun` without runtime self-extraction. The build changes only `AppRun`'s final invocation to `exec`, making the real server process receive stop signals directly.
+- The server runs as UID/GID 999, matching the `hypersomniac` identity and persistent-volume ownership. It does not receive Vortex environment values.
 - WebRTC traffic uses the explicitly host-bound UDP port 9000. The game also depends on the upstream Hypersomnia public master-server/signaling service for browser discovery and WebRTC negotiation.
-- `server-data` persists `/home/hypersomniac/.config/Hypersomnia/user`.
-- `readOnlyRootfs` is deliberately `false` for this service. The upstream AppImage extracts itself below `/tmp` at process startup, so a read-only root filesystem prevents the server from launching. This is a technical constraint of the immutable upstream image rather than a request for Vortex credentials.
+- `server-data` persists the complete `/home/hypersomniac/.config/Hypersomnia` application-data directory. It is the server's only durable writable path.
+- Both services use a read-only root filesystem. Vortex supplies a bounded temporary `/tmp` filesystem, but the headless server no longer depends on it for AppImage extraction.
+- The runtime build refreshes `libgnutls30` and fails unless Debian reports a version greater than or equal to `3.7.9-2+deb12u7`.
 
 ## Operator checklist
 
 1. Publish the `vortex-v2` source branch before making the application reachable over a network.
 2. Configure only `VORTEX_PUBLIC_URL` and `VORTEX_SDK_URL` through Vortex's public environment injection. The gateway rejects non-HTTPS remote origins, cross-origin SDK URLs, credentials, query strings, fragments, and unexpected SDK paths. Local HTTP is allowed only for loopback and `*.localhost` development.
 3. Make host UDP 9000 reachable through the host firewall/NAT. Only one deployed stack can claim that host port at a time.
-4. Confirm the server is visible through the upstream server browser and exercise connect, input, a second client, interruption, reconnect, and explicit quit before promotion.
-5. Import all six catalog assets from `vortex/assets/catalog/`, then verify the returned checksums and the ordered screenshot gallery. The three promotional assets are generated originals; the three screenshots are truthful captures from the live game.
+4. Confirm the server container runs as `999:999`, has a read-only root filesystem, mounts only the complete Hypersomnia config directory as persistent storage, and reports a fixed `libgnutls30` package version.
+5. Confirm the server is visible through the upstream server browser and exercise connect, input, a second client, interruption, reconnect, and explicit quit before promotion.
+6. Import all six catalog assets from `vortex/assets/catalog/`, then verify the returned checksums and the ordered screenshot gallery. The three promotional assets are generated originals; the three screenshots are truthful captures from the live game.

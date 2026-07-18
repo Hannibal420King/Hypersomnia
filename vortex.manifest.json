@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": 2,
+  "revision": 3,
   "requiredScopes": [
     "identity.basic",
     "play.write",
@@ -92,9 +92,11 @@
       {
         "name": "server",
         "image": {
-          "source": "OCI",
-          "reference": "ghcr.io/teamhypersomnia/hypersomnia-server@sha256:2b6fef2c3dded7b1d206ad17b050dfa490267a4dbe6581813a7d023694f611b5"
+          "source": "APP"
         },
+        "entrypoint": [
+          "/usr/local/bin/hypersomnia-headless"
+        ],
         "environment": {},
         "ports": [
           {
@@ -120,12 +122,12 @@
         "mounts": [
           {
             "volume": "server-data",
-            "target": "/home/hypersomniac/.config/Hypersomnia/user",
+            "target": "/home/hypersomniac/.config/Hypersomnia",
             "readOnly": false
           }
         ],
         "dependsOn": [],
-        "readOnlyRootfs": false,
+        "readOnlyRootfs": true,
         "stopGraceSeconds": 30
       }
     ],

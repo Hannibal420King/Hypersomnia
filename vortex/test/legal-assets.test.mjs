@@ -18,8 +18,12 @@ test("AGPL and source obligations are visible and specific", async () => {
   assert.match(notice, /TeamHypersomnia\/Hypersomnia/);
   assert.match(notice, /8f5dbc6c951b22b48d4e332dd499960a8fa2fcee/);
   assert.match(notice, /2b6fef2c3dded7b1d206ad17b050dfa490267a4dbe6581813a7d023694f611b5/);
+  assert.match(notice, /extracts `Hypersomnia-Headless\.AppImage`/i);
+  assert.match(notice, /final game invocation uses `exec`/i);
+  assert.match(notice, /3\.7\.9-2\+deb12u7/);
   assert.match(deployment, /UDP port 9000/i);
-  assert.match(deployment, /read-only root filesystem prevents the server from launching/i);
+  assert.match(deployment, /Both services use a read-only root filesystem/i);
+  assert.match(deployment, /complete `\/home\/hypersomniac\/\.config\/Hypersomnia`/i);
   assert.match(deployment, /Import all six catalog assets/i);
   assert.doesNotMatch(notice, /screenshots remain .*pending/i);
 });
