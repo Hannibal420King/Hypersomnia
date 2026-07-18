@@ -132,7 +132,10 @@
     "volumes": [
       {
         "name": "server-data",
-        "kind": "PERSISTENT"
+        "kind": "PERSISTENT",
+        "quotaBytes": "1073741824",
+        "ownerUid": 999,
+        "ownerGid": 999
       }
     ]
   }

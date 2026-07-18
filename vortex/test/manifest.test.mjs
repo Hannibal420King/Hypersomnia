@@ -76,7 +76,15 @@ test("deployment has a hardened web gateway and immutable headless server", () =
       readOnly: false
     }
   ]);
-  assert.deepEqual(deployment.volumes, [{ name: "server-data", kind: "PERSISTENT" }]);
+  assert.deepEqual(deployment.volumes, [
+    {
+      name: "server-data",
+      kind: "PERSISTENT",
+      quotaBytes: "1073741824",
+      ownerUid: 999,
+      ownerGid: 999,
+    },
+  ]);
 });
 
 test("the manifest does not contain embedded credentials", () => {
