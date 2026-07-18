@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1.0",
+  "game": {
+    "slug": "hypersomnia",
+    "name": "Hypersomnia"
+  },
+  "status": "complete",
+  "assets": [
+    {
+      "kind": "ICON",
+      "filename": "icon.png",
+      "width": 1024,
+      "height": 1024,
+      "byteSize": 2245765,
+      "altText": "Three cyan, magenta, and amber energy arcs surround a luminous arena core.",
+      "sha256": "63d0a269222e46e9d0f8d88b4d2dba6f1c7b89816c228f028b84e8680972b290",
+      "generationPrompt": "Create one completely original premium square game icon for the open-source top-down science-fiction combat game Hypersomnia. Square 1:1 composition: a glowing hexagonal arena core seen from above, encircled by three distinct energy arcs in cyan, magenta, and amber representing three rival factions, dark graphite metal background, subtle circuit geometry, high-end neon sci-fi tactical style, high contrast and readable at small size, centered with generous safe padding for circular and rounded-square crops. Do not use any upstream logo or copied game artwork. Absolutely no words, letters, numbers, faction emblems, titles, logos, watermarks, borders, UI screenshots, brands, trademarks, or copied artwork. Suitable for final 1024x1024 PNG.",
+      "provenance": {
+        "type": "GENERATED_ORIGINAL",
+        "upstreamReference": null
+      },
+      "license": {
+        "identifier": "LicenseRef-Vortex-Generated-Original",
+        "copyrightHolder": "Hannibal420King",
+        "notes": "Original catalog artwork generated for this fork; no upstream artwork was used."
+      }
+    },
+    {
+      "kind": "CARD",
+      "filename": "card.webp",
+      "width": 1536,
+      "height": 864,
+      "byteSize": 374790,
+      "altText": "Three neon squads converge on a glowing reactor in a top-down industrial arena.",
+      "sha256": "248468f85b90ba07952268decd5efafd7227392257daef9765dbea79ecf38884",
+      "generationPrompt": "Create one completely original cinematic 16:9 promotional card artwork for the open-source top-down science-fiction combat game Hypersomnia, intended for final 1536x864 WebP. Direct overhead view of a neon industrial arena centered in frame, three small abstract rival squads converging from cyan, magenta, and amber zones around a bright central reactor, graphite corridors, energy shields, sparks and clean tactical lighting, premium polished science-fiction game art with centered focal action and safe crop margins. No recognizable characters or copied assets. Absolutely no words, letters, numbers, faction symbols, titles, logos, Vortex branding, watermarks, borders, UI screenshots, trademarks, or copied artwork.",
+      "provenance": {
+        "type": "GENERATED_ORIGINAL",
+        "upstreamReference": null
+      },
+      "license": {
+        "identifier": "LicenseRef-Vortex-Generated-Original",
+        "copyrightHolder": "Hannibal420King",
+        "notes": "Original catalog artwork generated for this fork; no upstream artwork was used."
+      }
+    },
+    {
+      "kind": "HERO",
+      "filename": "hero.webp",
+      "width": 2048,
+      "height": 896,
+      "byteSize": 188980,
+      "altText": "A three-faction neon arena fills the right side of a dark science-fiction banner.",
+      "sha256": "63f57731c628167e4ee2b65c714b02108e4b3620df36ad3ba1faa3515ab57bf4",
+      "generationPrompt": "Create one completely original ultra-wide hero banner for the open-source top-down science-fiction combat game Hypersomnia, composed for final 2048x896 (16:7) WebP. Preserve the LEFT half as dark, low-detail graphite-and-navy negative space for title and controls. On the RIGHT third, show a neon industrial arena from overhead with three abstract rival squads and energy lanes in cyan, magenta, and amber converging around a luminous reactor, subtle sparks and tactical geometry, premium polished sci-fi combat atmosphere and crisp safe cropping. Do not use upstream logos or copied game assets. Absolutely no words, letters, numbers, faction symbols, titles, logos, Vortex branding, watermarks, borders, UI screenshots, trademarks, or copied artwork.",
+      "provenance": {
+        "type": "GENERATED_ORIGINAL",
+        "upstreamReference": null
+      },
+      "license": {
+        "identifier": "LicenseRef-Vortex-Generated-Original",
+        "copyrightHolder": "Hannibal420King",
+        "notes": "Original catalog artwork generated for this fork; no upstream artwork was used."
+      }
+    },
+    {
+      "kind": "SCREENSHOT",
+      "filename": "screenshots/01.webp",
+      "width": 1920,
+      "height": 1080,
+      "byteSize": 243924,
+      "altText": "VortexTester stands armed in the Resistance buy room during a live multiplayer round.",
+      "sha256": "207534d43858e464fd3c9142fe599647acf37203fd556b9befbcd243a74ab0d9",
+      "generationPrompt": null,
+      "provenance": {
+        "type": "REAL_GAMEPLAY_CAPTURE",
+        "upstreamReference": "https://github.com/Hannibal420King/Hypersomnia/tree/vortex-v2 at commit 8f5dbc6c951b22b48d4e332dd499960a8fa2fcee; captured from the live WebAssembly multiplayer client on 2026-07-18."
+      },
+      "license": {
+        "identifier": "AGPL-3.0",
+        "copyrightHolder": "Team Hypersomnia contributors and Hannibal420King",
+        "notes": "Real gameplay capture from this AGPL-3.0-licensed Hypersomnia fork; not AI-generated."
+      }
+    },
+    {
+      "kind": "SCREENSHOT",
+      "filename": "screenshots/02.webp",
+      "width": 1920,
+      "height": 1080,
+      "byteSize": 326320,
+      "altText": "VortexTesterTwo holds position beside neon machinery after joining the Metropolis faction.",
+      "sha256": "3cd076ce9f927467bb7e1c861d614dd72f8206029310e4fd4aa9223b4d3ab7fe",
+      "generationPrompt": null,
+      "provenance": {
+        "type": "REAL_GAMEPLAY_CAPTURE",
+        "upstreamReference": "https://github.com/Hannibal420King/Hypersomnia/tree/vortex-v2 at commit 8f5dbc6c951b22b48d4e332dd499960a8fa2fcee; captured from the live WebAssembly multiplayer client on 2026-07-18."
+      },
+      "license": {
+        "identifier": "AGPL-3.0",
+        "copyrightHolder": "Team Hypersomnia contributors and Hannibal420King",
+        "notes": "Real gameplay capture from this AGPL-3.0-licensed Hypersomnia fork; not AI-generated."
+      }
+    },
+    {
+      "kind": "SCREENSHOT",
+      "filename": "screenshots/03.webp",
+      "width": 1920,
+      "height": 1080,
+      "byteSize": 379876,
+      "altText": "Cyan laser fire crosses a dark industrial arena during a live three-faction combat round.",
+      "sha256": "8bf54c735c9bc7d9b8bb0e52cac6b45e1ae7b7d0ea274e44130ec8eabfe86a1c",
+      "generationPrompt": null,
+      "provenance": {
+        "type": "REAL_GAMEPLAY_CAPTURE",
+        "upstreamReference": "https://github.com/Hannibal420King/Hypersomnia/tree/vortex-v2 at commit 8f5dbc6c951b22b48d4e332dd499960a8fa2fcee; captured from the live WebAssembly multiplayer client on 2026-07-18."
+      },
+      "license": {
+        "identifier": "AGPL-3.0",
+        "copyrightHolder": "Team Hypersomnia contributors and Hannibal420King",
+        "notes": "Real gameplay capture from this AGPL-3.0-licensed Hypersomnia fork; not AI-generated."
+      }
+    }
+  ]
+}

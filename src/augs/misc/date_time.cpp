@@ -19,19 +19,6 @@
 #include <Windows.h>
 #endif
 
-template<class t>
-static std::string leading_zero(const t component) {
-	std::stringstream out;
-	out << component;
-	std::string result = out.str();
-
-	if (result.length() == 1) {
-		result = '0' + result;
-	}
-
-	return result;
-}
-
 augs::date_time::date_time() : date_time(std::time(nullptr)) {}
 
 augs::date_time::date_time(

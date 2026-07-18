@@ -1,0 +1,61 @@
+#vortex-runtime-panel {
+  position: fixed;
+  z-index: 2147483647;
+  left: 14px;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: calc(100vw - 28px);
+  padding: 8px 10px;
+  border: 1px solid rgba(86, 220, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(5, 11, 20, 0.86);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.38);
+  color: #dff8ff;
+  font: 600 12px/1.2 system-ui, sans-serif;
+  backdrop-filter: blur(12px);
+}
+
+#vortex-runtime-panel .vortex-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #f2b94b;
+  box-shadow: 0 0 12px currentColor;
+}
+
+#vortex-runtime-panel[data-mode="connected"] .vortex-dot { background: #58f7b2; }
+#vortex-runtime-panel[data-mode="error"] .vortex-dot { background: #ff6e91; }
+#vortex-runtime-panel[data-mode="standalone"] .vortex-dot { background: #8aa2b5; }
+
+#vortex-runtime-panel a,
+#vortex-runtime-panel button {
+  color: #6ee6ff;
+  font: inherit;
+}
+
+#vortex-runtime-panel a { text-decoration: none; }
+#vortex-runtime-panel a:hover { text-decoration: underline; }
+
+#vortex-runtime-panel button {
+  padding: 4px 7px;
+  border: 1px solid rgba(110, 230, 255, 0.35);
+  border-radius: 7px;
+  background: rgba(39, 115, 145, 0.2);
+  cursor: pointer;
+}
+
+#vortex-runtime-panel button:hover { background: rgba(39, 115, 145, 0.38); }
+#vortex-runtime-panel button:disabled { opacity: 0.55; cursor: wait; }
+
+@media (max-width: 620px) {
+  #vortex-runtime-panel {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

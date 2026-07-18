@@ -1260,6 +1260,10 @@ if(CLANG)
 	set(WARNINGS_FOR_OUR_CODE_ONLY " ")
 
 	set(DISABLED_WARNINGS "-Wno-error=unused-command-line-argument -Wno-error=missing-braces -Wno-deprecated-enum-enum-conversion")
+	if(BUILD_FOR_WEB)
+		# Newer Emscripten/Clang diagnoses uninstantiated helpers in vendored libraries.
+		set(DISABLED_WARNINGS "${DISABLED_WARNINGS} -Wno-error=unused-template")
+	endif()
 
 	if (APPLE)
 		set(DISABLED_WARNINGS "${DISABLED_WARNINGS} -Wno-error=deprecated-declarations")
@@ -1484,7 +1488,8 @@ if(BUILD_FOR_WEB)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${ADDITIONAL_WEB_FLAGS}")
 
 	# For clipboard support
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sEXPORTED_RUNTIME_METHODS=ccall")
+	# datachannel-wasm's JavaScript bridge reads these heap views through Module.
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sEXPORTED_RUNTIME_METHODS=ccall,HEAPU8,HEAPU32")
 
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lidbfs.js")
 	

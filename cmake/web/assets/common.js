@@ -80,6 +80,9 @@ function setBrowserLocation(newLocation) {
   console.log("New location: ", locStr);
   try {
     window.history.pushState("object or string", "Title", locStr);
+    if (locStr.startsWith('/game/')) {
+      window.hypersomniaVortex?.trackObserved('hypersomnia.session.joined', locStr);
+    }
   } catch (e) {
     console.warn("Could not update browser location (possibly in a cross-origin iframe):", e);
   }
@@ -344,8 +347,9 @@ function request_fresh_auth_token() {
 }
 
 function pre_run() {
-  // Add a run dependency to ensure syncing is done before the application starts
+  // Add run dependencies so persisted settings and Vortex identity are ready before startup.
   Module.addRunDependency('idbfs');
+  Module.addRunDependency('vortex-identity');
 
   // Create a folder inside our virtual file system
   FS.mkdir('/user');
@@ -357,8 +361,20 @@ function pre_run() {
     if (err) console.error('Error loading from IndexedDB', err);
     else console.log('Loaded from IndexedDB');
 
-    // Remove the run dependency after IDBFS is fully loaded
-    Module.removeRunDependency('idbfs');
+    const adapter = window.hypersomniaVortex;
+    const identityReady = adapter
+      ? adapter.ready.then(() => adapter.applyIdentity(FS))
+      : Promise.resolve(false);
+
+    identityReady
+      .catch(error => console.warn('Vortex identity was not applied:', error))
+      .finally(() => {
+        FS.syncfs(false, function (syncError) {
+          if (syncError) console.error('Error saving Vortex identity to IndexedDB', syncError);
+          Module.removeRunDependency('vortex-identity');
+          Module.removeRunDependency('idbfs');
+        });
+      });
   });
 }
 
@@ -544,6 +560,7 @@ function sdk_happy_time() {
 }
 
 function sdk_gameplay_start() {
+  window.hypersomniaVortex?.track('hypersomnia.gameplay.entered');
   if (window.CrazyGames) {
     console.log("Crazygames: gameplayStart");
     window.CrazyGames.SDK.game.gameplayStart();
