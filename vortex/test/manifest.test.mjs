@@ -16,7 +16,7 @@ const baselineScopes = [
 
 test("manifest requests only the baseline scopes", () => {
   assert.equal(manifest.schemaVersion, "1.0");
-  assert.equal(manifest.revision, 3);
+  assert.equal(manifest.revision, 4);
   assert.deepEqual(manifest.requiredScopes, baselineScopes);
   assert.deepEqual(manifest.optionalScopes, []);
   assert.deepEqual(manifest.notificationTemplates, []);
@@ -62,6 +62,9 @@ test("deployment has a hardened web gateway and extracted headless server", () =
   assert.deepEqual(server.entrypoint, ["/usr/local/bin/hypersomnia-headless"]);
   assert.equal("command" in server, false);
   assert.equal("vortexEnvironment" in server, false);
+  assert.deepEqual(server.environment, {});
+  assert.equal(server.networkEgress, "PUBLIC");
+  assert.equal("networkEgress" in web, false);
   assert.equal(server.readOnlyRootfs, true);
   assert.deepEqual(server.ports, [
     { name: "web-rtc", containerPort: 9000, protocol: "UDP", exposure: "HOST", hostPort: 9000 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": 3,
+  "revision": 4,
   "requiredScopes": [
     "identity.basic",
     "play.write",
@@ -98,6 +98,7 @@
           "/usr/local/bin/hypersomnia-headless"
         ],
         "environment": {},
+        "networkEgress": "PUBLIC",
         "ports": [
           {
             "name": "web-rtc",

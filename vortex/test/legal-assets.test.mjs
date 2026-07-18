@@ -22,6 +22,11 @@ test("AGPL and source obligations are visible and specific", async () => {
   assert.match(notice, /final game invocation uses `exec`/i);
   assert.match(notice, /3\.7\.9-2\+deb12u7/);
   assert.match(deployment, /UDP port 9000/i);
+  assert.match(deployment, /masterserver\.hypersomnia\.io:8430/i);
+  assert.match(deployment, /STUN\/TURN/i);
+  assert.match(deployment, /same server container and network namespace/i);
+  assert.match(deployment, /not (?:a )?socat/i);
+  assert.match(deployment, /does not provide destination or protocol allowlisting/i);
   assert.match(deployment, /Both services use a read-only root filesystem/i);
   assert.match(deployment, /complete `\/home\/hypersomniac\/\.config\/Hypersomnia`/i);
   assert.match(deployment, /Import all six catalog assets/i);
