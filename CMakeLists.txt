@@ -209,6 +209,12 @@ option(BLAKE_PORTABLE "Build BLAKE3 in portable mode (no SIMD)." OFF)
 ## Switches for functionality originating from the Hypersomnia codebase.
 
 option(BUILD_VERSION_FILE_GENERATOR "Build version file generator to generate commit information." ON)
+set(
+	HYPERSOMNIA_VERSION_OVERRIDE
+	""
+	CACHE STRING
+	"Release version to embed when Git metadata is intentionally unavailable."
+)
 option(BUILD_TEST_SCENES "Build built-in official content (legacy flag - should always be on)" ON)
 option(BUILD_STENCIL_BUFFER "Build stencil buffer related code. Will be disabled in MMO setups, so everybody is equal in having wallhacks." ON)
 
@@ -1934,6 +1940,12 @@ if(BUILD_VERSION_FILE_GENERATOR)
 	add_definitions(-DWAS_VERSION_GENERATOR_BUILT=1)
 endif()
 
+if(HYPERSOMNIA_VERSION_OVERRIDE)
+	if(NOT HYPERSOMNIA_VERSION_OVERRIDE MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.]+)?$")
+		message(FATAL_ERROR "HYPERSOMNIA_VERSION_OVERRIDE must be a semantic release version.")
+	endif()
+endif()
+
 if(ADD_APPLICATION_ICON)
 	add_definitions(-DADD_APPLICATION_ICON)
 endif()
@@ -2030,6 +2042,13 @@ if(MSVC)
 	endif()
 else()
 	add_executable(Hypersomnia ${HYPERSOMNIA_SRCS})
+endif()
+
+if(HYPERSOMNIA_VERSION_OVERRIDE)
+	target_compile_definitions(
+		Hypersomnia
+		PRIVATE HYPERSOMNIA_VERSION_OVERRIDE="${HYPERSOMNIA_VERSION_OVERRIDE}"
+	)
 endif()
 
 # We define libraries upon which Hypersomnia depends.

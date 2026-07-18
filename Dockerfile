@@ -13,6 +13,8 @@ RUN set -eux; \
 
 FROM docker.io/emscripten/emsdk:6.0.3@sha256:bb0910e6a18bb9bd7cb31ae4ed40f9073148b78cb2cdb8ea8676454e0d85425c AS web-builder
 
+ARG HYPERSOMNIA_COMPAT_VERSION=2.3.0-pre1
+
 USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -31,6 +33,7 @@ COPY . .
 RUN find cmake -type f -name '*.sh' -exec sed -i 's/\r$//' {} + \
     && node --test "vortex/test/*.test.mjs" \
     && bash cmake/build.sh Release Web -DGENERATE_DEBUG_INFORMATION=0 \
+        "-DHYPERSOMNIA_VERSION_OVERRIDE=${HYPERSOMNIA_COMPAT_VERSION}" \
     && ninja -C build/current Hypersomnia
 
 RUN install -d /opt/hypersomnia-web/assets \

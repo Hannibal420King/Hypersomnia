@@ -35,6 +35,26 @@ std::string hypersomnia_version::get_version_string() const {
 	return commit_tag;
 }
 
+#elif defined(HYPERSOMNIA_VERSION_OVERRIDE)
+
+hypersomnia_version::hypersomnia_version() :
+	commit_tag(HYPERSOMNIA_VERSION_OVERRIDE),
+	commit_message("Release version supplied by the reproducible container build"),
+	commit_date("Unknown"),
+	commit_hash("Unknown"),
+	working_tree_changes({})
+{
+}
+
+std::string hypersomnia_version::get_summary() const {
+	return std::string("Hypersomnia version ") + get_version_string() +
+		"\nRelease version supplied by the reproducible container build.\n";
+}
+
+std::string hypersomnia_version::get_version_string() const {
+	return commit_tag;
+}
+
 #else
 
 hypersomnia_version::hypersomnia_version() :
