@@ -16,7 +16,7 @@ const baselineScopes = [
 
 test("manifest requests only the baseline scopes", () => {
   assert.equal(manifest.schemaVersion, "1.0");
-  assert.equal(manifest.revision, 4);
+  assert.equal(manifest.revision, 5);
   assert.deepEqual(manifest.requiredScopes, baselineScopes);
   assert.deepEqual(manifest.optionalScopes, []);
   assert.deepEqual(manifest.notificationTemplates, []);
