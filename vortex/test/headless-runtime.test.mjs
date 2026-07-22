@@ -5,8 +5,11 @@ import test from "node:test";
 const repoUrl = new URL("../../", import.meta.url);
 const readRepoFile = (relative) => readFile(new URL(relative, repoUrl), "utf8");
 
-test("Dockerfile extracts the pinned headless AppImage into the hardened APP image", async () => {
-  const dockerfile = await readRepoFile("Dockerfile");
+test("Dockerfile extracts and repairs the pinned headless AppImage in the hardened APP image", async () => {
+  const [dockerfile, sceneContent] = await Promise.all([
+    readRepoFile("Dockerfile"),
+    readRepoFile("src/test_scenes/test_scenes_content.cpp")
+  ]);
 
   assert.match(
     dockerfile,
@@ -21,6 +24,18 @@ test("Dockerfile extracts the pinned headless AppImage into the hardened APP ima
     dockerfile,
     /COPY --from=headless-extractor \/opt\/hypersomnia-headless \/opt\/hypersomnia-headless/
   );
+  assert.match(
+    sceneContent,
+    /ped_shield_impact_sound\.id = to_sound_id\(test_scene_sound_id::EXPLOSION\)/
+  );
+  assert.match(
+    dockerfile,
+    /cd \/opt\/hypersomnia-headless\/usr\/share\/hypersomnia\/content\/sfx/
+  );
+  assert.match(dockerfile, /test -f explosion\.ogg/);
+  assert.match(dockerfile, /test ! -e shield_hit\.ogg/);
+  assert.match(dockerfile, /ln -s explosion\.ogg shield_hit\.ogg/);
+  assert.match(dockerfile, /test -r shield_hit\.ogg/);
   assert.match(dockerfile, /apt-get install -y --no-install-recommends libgnutls30/);
   assert.match(
     dockerfile,

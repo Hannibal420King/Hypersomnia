@@ -64,6 +64,16 @@ RUN set -eux; \
         /home/hypersomniac/.config/Hypersomnia
 
 COPY --from=headless-extractor /opt/hypersomnia-headless /opt/hypersomnia-headless
+
+# The pinned 2.3.0-pre1 server still requests the legacy shield_hit path even
+# though current game content maps shield impacts to the packaged explosion SFX.
+RUN set -eux; \
+    cd /opt/hypersomnia-headless/usr/share/hypersomnia/content/sfx; \
+    test -f explosion.ogg; \
+    test ! -e shield_hit.ogg; \
+    ln -s explosion.ogg shield_hit.ogg; \
+    test -r shield_hit.ogg
+
 COPY --chmod=0555 vortex/runtime/headless-entrypoint.sh /usr/local/bin/hypersomnia-headless
 
 FROM runtime-base AS app

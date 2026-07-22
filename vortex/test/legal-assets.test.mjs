@@ -20,6 +20,8 @@ test("AGPL and source obligations are visible and specific", async () => {
   assert.match(notice, /2b6fef2c3dded7b1d206ad17b050dfa490267a4dbe6581813a7d023694f611b5/);
   assert.match(notice, /extracts `Hypersomnia-Headless\.AppImage`/i);
   assert.match(notice, /final game invocation uses `exec`/i);
+  assert.match(notice, /creates `content\/sfx\/shield_hit\.ogg` as a symbolic link/i);
+  assert.match(notice, /maps shield-impact audio to the explosion sound/i);
   assert.match(notice, /3\.7\.9-2\+deb12u7/);
   assert.match(deployment, /UDP port 9000/i);
   assert.match(deployment, /masterserver\.hypersomnia\.io:8430/i);
@@ -29,6 +31,7 @@ test("AGPL and source obligations are visible and specific", async () => {
   assert.match(deployment, /does not provide destination or protocol allowlisting/i);
   assert.match(deployment, /Both services use a read-only root filesystem/i);
   assert.match(deployment, /complete `\/home\/hypersomniac\/\.config\/Hypersomnia`/i);
+  assert.match(deployment, /resolves `content\/sfx\/shield_hit\.ogg` to `explosion\.ogg`/i);
   assert.match(deployment, /Import all six catalog assets/i);
   assert.doesNotMatch(notice, /screenshots remain .*pending/i);
 });
