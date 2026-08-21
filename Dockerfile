@@ -34,7 +34,7 @@ RUN find cmake -type f -name '*.sh' -exec sed -i 's/\r$//' {} + \
     && node --test "vortex/test/*.test.mjs" \
     && bash cmake/build.sh Release Web -DGENERATE_DEBUG_INFORMATION=0 \
         "-DHYPERSOMNIA_VERSION_OVERRIDE=${HYPERSOMNIA_COMPAT_VERSION}" \
-    && ninja -C build/current Hypersomnia
+    && ninja -j 2 -C build/current Hypersomnia
 
 RUN install -d /opt/hypersomnia-web/assets \
     && cp build/current/Hypersomnia.html /opt/hypersomnia-web/ \
