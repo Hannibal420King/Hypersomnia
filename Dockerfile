@@ -52,7 +52,8 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends libgnutls30; \
     installed_version="$(dpkg-query -W -f='${Version}' libgnutls30)"; \
     dpkg --compare-versions "${installed_version}" ge "3.7.9-2+deb12u7"; \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*; \
+    rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 RUN set -eux; \
     groupadd --system --gid 999 hypersomniac; \
